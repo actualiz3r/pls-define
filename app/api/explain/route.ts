@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Use server-side environment variable
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY, // Use server-side environment variable
 });
 
 // Rate limiting variables
@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     lastRequestTime = now;
   }
 
-  for (let attempt = 0; attempt < Number(process.env.MAX_RETRIES); attempt++) {
+  for (let attempt = 0; attempt < Number(process.env.NEXT_PUBLIC_MAX_RETRIES); attempt++) {
     try {
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       }
     } catch (error) {
       console.error(`Attempt ${attempt + 1} failed:`, error);
-      if (attempt === Number(process.env.MAX_RETRIES) - 1) {
+      if (attempt === Number(process.env.NEXT_PUBLIC_MAX_RETRIES) - 1) {
         return NextResponse.json({ error: "Max retries reached. An error occurred while processing the request" }, { status: 500 });
       }
     }
