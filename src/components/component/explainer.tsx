@@ -53,7 +53,7 @@ export function Explainer() {
       }
       const result = await response.json()
       console.log("Received API response:", result)
-      const explanationsWithColor = result.map((item, index) => ({
+      const explanationsWithColor = result.map((item: any, index) => ({
         ...item,
         color: colors[index % colors.length]
       }))
